@@ -272,7 +272,7 @@ $('#save').addEventListener('click', () => toast('Saving contact…'));
 
 // LIGHT · SOUND fader — one control: room light, button colour and an original swell rise together
 const lights = $('#lights'), tag = $('#save');
-let ac, sw;
+let ac, sw, armed = true, topTimer = 0;
 function buildSwell(){
   ac = new (window.AudioContext||window.webkitAudioContext)();
   const master = ac.createGain(); master.gain.value = 0;
@@ -299,9 +299,13 @@ function setLevel(v){            // v: 0..100
   document.documentElement.style.setProperty('--lights', x);
   lights.style.background = `linear-gradient(90deg,#2a1200 0%,var(--amber) ${v}%,rgba(255,255,255,.12) ${v}%)`;
   tag.classList.toggle('flash', v >= 99);          // the tag flashes only at the very top
+  // at the top the sound holds 2 s, then fades out by itself; it stays silent until the fader goes back to zero
+  if (v <= 0) armed = true;
+  if (v >= 99 && armed && !topTimer) topTimer = setTimeout(() => { armed = false; topTimer = 0; if (sw) sw.master.gain.setTargetAtTime(0, ac.currentTime, .5); }, 2000);
+  if (v < 99 && topTimer) { clearTimeout(topTimer); topTimer = 0; }
   if (sw) {
     const now = ac.currentTime, k = x*x*(3-2*x);   // smooth convergence curve
-    sw.master.gain.setTargetAtTime(.32*x*x, now, .08);
+    sw.master.gain.setTargetAtTime(armed ? .32*x*x : 0, now, armed ? .08 : .5);
     sw.lp.frequency.setTargetAtTime(300 + 7000*x*x, now, .1);
     sw.voices.forEach(vc => vc.o.frequency.setTargetAtTime(vc.start + (vc.t - vc.start)*k, now, .12));
   }
