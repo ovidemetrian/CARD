@@ -245,8 +245,9 @@ buildVcf();
 fetch('https://api.github.com/repos/ovidemetrian/CARD/issues?state=all&creator=ovidemetrian&per_page=30',{headers:{Accept:'application/vnd.github+json'}})
   .then(r => r.ok ? r.json() : [])
   .then(list => {
-    const it = (list||[]).find(i => !i.pull_request && /mail/i.test(i.title||''));
-    const m = it && (it.body||'').match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/);
+    const re = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/, txt = i => (i.title||'') + ' ' + (i.body||'');
+    const it = (list||[]).find(i => !i.pull_request && re.test(txt(i)));
+    const m = it && txt(it).match(re);
     if (m) { C.email = m[0]; $('#mail').href = 'mailto:' + m[0]; $('#mail').hidden = false; buildVcf(); }
   })
   .catch(() => {});
