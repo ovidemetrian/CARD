@@ -99,6 +99,7 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5em;text-decoration:none;color:#fff}
 .round svg{width:3.4em;height:3.4em}
 .round span{font-size:2.2em;color:rgba(255,255,255,.7)}
+.round[hidden]{display:none}
 
 /* page 2 — about / readme */
 .p2 h2{font-size:5.6em;margin:.4em 0 .3em;font-weight:800}
@@ -172,6 +173,7 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
       <p class="motto boot" style="animation-delay:.7s"><i>Lumină, nu vrăjală</i> — light, not trickery, not deception</p>
       <div class="strip boot" style="animation-delay:.75s">
         <div class="fader"><label for="lights">LIGHTS</label><input id="lights" type="range" min="0" max="100" value="100" aria-label="Lights"></div>
+        <a class="round" id="mail" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email</span></a>
         <a class="round" id="site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Work</span></a>
         <button class="round" id="pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button>
       </div>
@@ -232,11 +234,22 @@ document.querySelectorAll('.scene').forEach(s => s.href = sms(`Hi Ovi, I got you
 // vCard — one tap into the phone's contacts
 function vcard(){
   return ['BEGIN:VCARD','VERSION:3.0',`N:${C.last};${C.first};;;`,`FN:${C.fn}`,`ORG:${C.org}`,`TITLE:${C.title}`,
-    `TEL;TYPE=CELL:${C.tel}`,...C.urls.map(u=>`URL:${u}`),'ADR;TYPE=WORK:;;;Phoenix;AZ;;USA',
+    `TEL;TYPE=CELL:${C.tel}`,...(C.email?[`EMAIL;TYPE=INTERNET:${C.email}`]:[]),...C.urls.map(u=>`URL:${u}`),'ADR;TYPE=WORK:;;;Phoenix;AZ;;USA',
     'NOTE:Smart homes · AV systems · interface design. Lumină\\, nu vrăjală.','END:VCARD'].join('\r\n');
 }
-const vcfBlob = new Blob([vcard()],{type:'text/vcard;charset=utf-8'});
-$('#save').href = URL.createObjectURL(vcfBlob);
+let vcfBlob;
+const buildVcf = () => { vcfBlob = new Blob([vcard()],{type:'text/vcard;charset=utf-8'}); $('#save').href = URL.createObjectURL(vcfBlob); };
+buildVcf();
+
+// Email comes from the repo's "email" issue (a GitHub form Ovi fills in himself) — never typed into this code
+fetch('https://api.github.com/repos/ovidemetrian/CARD/issues?state=all&creator=ovidemetrian&per_page=30',{headers:{Accept:'application/vnd.github+json'}})
+  .then(r => r.ok ? r.json() : [])
+  .then(list => {
+    const it = (list||[]).find(i => !i.pull_request && /mail/i.test(i.title||''));
+    const m = it && (it.body||'').match(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/);
+    if (m) { C.email = m[0]; $('#mail').href = 'mailto:' + m[0]; $('#mail').hidden = false; buildVcf(); }
+  })
+  .catch(() => {});
 $('#save').addEventListener('click', () => toast('Opening contact…'));
 
 // Lights fader — dims the room
