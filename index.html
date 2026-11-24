@@ -65,10 +65,12 @@ button{font:inherit;color:inherit}
 .who{margin:3.2em 0 0}
 h1{font-size:7.6em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
 .title{font-size:3.3em;margin:.45em 0 0;color:#ffe6b8;line-height:1.3}
+.phone{display:inline-block;margin-top:.35em;font-size:5.4em;font-weight:800;letter-spacing:.02em;color:#fff;text-decoration:none;
+  background:linear-gradient(90deg,#ffd23f,#ff6a00 55%,#ff3b3b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
-.label{font-size:2.1em;letter-spacing:.2em;font-weight:700;color:var(--amber);margin:3.4em 0 1.1em}
+.label{font-size:2.1em;letter-spacing:.2em;font-weight:700;color:var(--amber);margin:2.2em 0 1.1em}
 .scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:2em}
-.scene{height:17em;border-radius:2.6em;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;
+.scene{height:15em;border-radius:2.6em;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9em;text-decoration:none;color:#fff;position:relative;
   transition:transform .12s,background .2s,border-color .2s}
 .scene:active{transform:scale(.96);background:rgba(255,176,32,.18);border-color:var(--amber)}
@@ -78,7 +80,7 @@ h1{font-size:7.6em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
 .scene::after{content:"";position:absolute;top:1.4em;right:1.4em;width:.9em;height:.9em;border-radius:50%;background:rgba(255,176,32,.35)}
 
 .row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2em;margin-top:2em}
-.key{height:12em;border-radius:2.6em;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:1.2em;
+.key{height:11em;border-radius:2.6em;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:1.2em;
   text-decoration:none;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);transition:transform .12s}
 .key:active{transform:scale(.96)}
 .key svg{width:4em;height:4em}
@@ -88,7 +90,7 @@ h1{font-size:7.6em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
 .key.call{background:linear-gradient(135deg,var(--amber),var(--red));border:0;color:#1a0800}
 
 .strip{display:flex;align-items:center;gap:2.2em;margin-top:2.6em}
-.motto{margin:auto 0 0;font-size:2.4em;color:rgba(255,255,255,.6);text-align:center}
+.motto{margin:auto 0 0;padding-top:1.4em;font-size:2.4em;color:rgba(255,255,255,.6);text-align:center}
 .motto i{color:var(--amber);font-style:normal;font-weight:700}
 .fader{flex:1;display:flex;align-items:center;gap:1.6em;height:8.5em;padding:0 2.6em;border-radius:2.6em;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.1)}
 .fader label{font-size:2.2em;letter-spacing:.2em;font-weight:700;color:rgba(255,255,255,.7)}
@@ -149,6 +151,7 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
       <div class="who boot" style="animation-delay:.2s">
         <h1>Ovi Demetrian</h1>
         <p class="title">Hardware-aware UI/UX designer · interfaces that control AV, lighting &amp; audio</p>
+        <a class="phone" id="phone">(602) 433-2222</a>
       </div>
 
       <div class="label boot" style="animation-delay:.35s">WHAT DO YOU NEED? — TAP A SCENE</div>
@@ -224,7 +227,7 @@ const $ = s => document.querySelector(s);
 const toast = m => { const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),2200); };
 const sms = body => `sms:${C.tel}${/iphone|ipad|ipod|mac/i.test(navigator.userAgent)?'&':'?'}body=${encodeURIComponent(body)}`;
 
-$('#call').href = 'tel:' + C.tel;
+$('#call').href = $('#phone').href = 'tel:' + C.tel;
 $('#text').href = sms('Hi Ovi, I got your card. ');
 $('#site').href = C.site;
 
