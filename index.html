@@ -253,9 +253,20 @@ function vcard(){
     'NOTE:Smart homes · AV systems · interface design. Lumină\\, nu vrăjală.','END:VCARD'].join('\r\n');
 }
 let vcfBlob;
-// on the web the tag opens a real hosted contact file (phones hand it straight to Contacts); as a lone file it builds one on the spot
+// Android: open the phone's own "Create contact" screen, already filled in (a web page can't write to Contacts by itself)
+const androidContact = () => {
+  const e = encodeURIComponent, x = [
+    'action=android.intent.action.INSERT', 'type=vnd.android.cursor.dir/raw_contact',
+    'S.name=' + e(C.fn), 'S.phone=' + e(C.tel), 'i.phone_type=2', 'S.company=' + e(C.org), 'S.job_title=' + e(C.title),
+    'S.notes=' + e(C.urls.join('  ')),
+    ...(C.email ? ['S.email=' + e(C.email)] : []),
+    'S.browser_fallback_url=' + e(C.home + 'ovi.vcf')];
+  return 'intent:#Intent;' + x.join(';') + ';end';
+};
 const buildVcf = () => { vcfBlob = new Blob([vcard()],{type:'text/vcard;charset=utf-8'}); const s = $('#save');
-  if (location.protocol === 'https:') { s.href = 'ovi.vcf'; s.removeAttribute('download'); } else s.href = URL.createObjectURL(vcfBlob); };
+  if (/android/i.test(navigator.userAgent)) { s.href = androidContact(); s.removeAttribute('download'); }
+  else if (location.protocol === 'https:') { s.href = 'ovi.vcf'; s.removeAttribute('download'); }      // iPhone: Safari shows "Create New Contact"
+  else s.href = URL.createObjectURL(vcfBlob); };
 buildVcf();
 
 // Email comes from the repo's "email" issue (a GitHub form Ovi fills in himself) — never typed into this code
