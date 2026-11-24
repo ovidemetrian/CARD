@@ -48,33 +48,34 @@ button{font:inherit;color:inherit}
   border:.25em solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(1.6em);backdrop-filter:blur(1.6em);
   box-shadow:0 4em 10em rgba(0,0,0,.55),inset 0 .3em 0 rgba(255,255,255,.06)}
 .track{display:flex;width:200%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
-.page{width:50%;height:100%;padding:4.6em 6em 6.5em;display:flex;flex-direction:column}
+.page{width:50%;height:100%;padding:3.4em 6em 6.5em;display:flex;flex-direction:column}
 
 /* power-on sequence */
 .boot{opacity:0;transform:translateY(1.2em);animation:up .6s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes up{to{opacity:1;transform:none}}
 
-.who{margin:1.6em 0 0}
+.who{margin:0}
 h1{font-size:7.6em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
 .title{font-size:3.3em;margin:.45em 0 0;color:#ffe6b8;line-height:1.3}
 
 /* long green tag: phone number + SAVE CONTACT */
-.tag{position:relative;display:flex;align-items:center;gap:2.2em;margin-top:3em;height:11em;padding:0 9em 0 4em;text-decoration:none;
-  background:linear-gradient(180deg,#14804a 0%,#0b5a33 55%,#073f24 100%);color:#ffd23f;
+.tag{position:relative;display:flex;align-items:center;justify-content:space-between;gap:2em;margin-top:3em;height:13em;padding:0 8.4em 0 3.6em;text-decoration:none;
+  background:linear-gradient(180deg,#0d6438 0%,#06442a 55%,#022a17 100%);color:#ffd23f;
   clip-path:polygon(0 0,calc(100% - 6em) 0,100% 50%,calc(100% - 6em) 100%,0 100%);
   border-radius:2.6em 0 0 2.6em;transition:filter .2s}
-.tag::before{content:"";position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0));pointer-events:none}
+.tag::before{content:"";position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0));pointer-events:none}
 .tag:active{filter:brightness(1.15)}
-.tag .num{font-size:5.6em;font-weight:800;letter-spacing:.01em;white-space:nowrap}
-.tag .sv{display:flex;align-items:center;gap:.5em;font-size:2.7em;font-weight:800;letter-spacing:.14em;white-space:nowrap;color:#ffe27a}
-.tag .sv svg{width:1.4em;height:1.4em}
+.tag .num{font-size:6.6em;font-weight:900;letter-spacing:.01em;white-space:nowrap;--outline:-.05em -.05em 0 #000,.05em -.05em 0 #000,-.05em .05em 0 #000,.05em .05em 0 #000,0 .07em 0 #000,0 -.07em 0 #000,.07em 0 0 #000,-.07em 0 0 #000,0 .14em .25em rgba(0,0,0,.6);text-shadow:var(--outline)}
+.tag .sv{display:flex;align-items:center;gap:.55em;font-size:2.5em;font-weight:900;letter-spacing:.12em;line-height:1.05;color:#ffe27a}
+.tag .sv b{display:block;font-weight:900}
+.tag .sv svg{width:2.3em;height:2.3em;flex:none;filter:drop-shadow(0 .08em 0 rgba(0,0,0,.6))}
 .tag.flash{animation:flash .55s ease-in-out infinite alternate}
 @keyframes flash{from{filter:brightness(1)}to{filter:brightness(1.7) saturate(1.3)}}
-.tag.flash .num,.tag.flash .sv{text-shadow:0 0 .35em rgba(255,226,122,.95)}
+.tag.flash .num{text-shadow:var(--outline),0 0 .35em rgba(255,226,122,.95)}
+.tag.flash .sv{text-shadow:0 0 .35em rgba(255,226,122,.95)}
 
-.label{font-size:2.1em;letter-spacing:.2em;font-weight:700;color:var(--amber);margin:3em 0 1.1em}
-.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:2em}
-.scene{height:15em;border-radius:2.6em;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;
+.scenes{display:grid;grid-template-columns:repeat(3,1fr);gap:2em;margin-top:4.4em}
+.scene{height:18em;border-radius:2.6em;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.9em;text-decoration:none;color:#fff;position:relative;
   transition:transform .12s,background .2s,border-color .2s}
 .scene:active{transform:scale(.96);background:rgba(255,176,32,.18);border-color:var(--amber)}
@@ -84,9 +85,9 @@ h1{font-size:7.6em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
 .scene::after{content:"";position:absolute;top:1.4em;right:1.4em;width:.9em;height:.9em;border-radius:50%;background:rgba(255,176,32,.35)}
 
 /* three candy buttons — colour shifts with the LIGHT fader */
-.row{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2em;margin-top:2.4em}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2em;margin-top:3.6em}
 .row:has(#mail[hidden]){grid-template-columns:repeat(2,1fr)}
-.candy{position:relative;height:11.5em;border-radius:3em;display:flex;align-items:center;justify-content:center;gap:1.1em;text-decoration:none;color:#fff;overflow:hidden;
+.candy{position:relative;height:14em;border-radius:3em;display:flex;align-items:center;justify-content:center;gap:1.1em;text-decoration:none;color:#fff;overflow:hidden;
   filter:brightness(calc(.72 + .45*var(--lights))) saturate(calc(.75 + .6*var(--lights))) hue-rotate(calc((var(--lights) - .5) * 18deg));
   box-shadow:inset 0 -.6em 1.2em rgba(0,0,0,.35),0 1em calc(1em + 2.6em*var(--lights)) var(--glow);transition:transform .12s}
 .candy[hidden]{display:none}
@@ -98,7 +99,7 @@ h1{font-size:7.6em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
 .c-yel{background:radial-gradient(120% 90% at 50% 10%,#ffe36b 0%,#d9a400 45%,#8a6200 100%);--glow:rgba(217,164,0,.5);color:#2a1a00}
 .c-blu{background:radial-gradient(120% 90% at 50% 10%,#5b8cff 0%,#1238b8 45%,#061a66 100%);--glow:rgba(18,56,184,.55)}
 
-.strip{display:flex;align-items:center;gap:2.2em;margin-top:2.6em}
+.strip{display:flex;align-items:center;gap:2.2em;margin-top:auto}
 .motto{margin:auto 0 0;padding-top:1em;font-size:2.4em;color:rgba(255,255,255,.6);text-align:center}
 .motto i{color:var(--amber);font-style:normal;font-weight:700}
 .fader{flex:1;display:flex;align-items:center;gap:1.6em;height:8.5em;padding:0 2.6em;border-radius:2.6em;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.1)}
@@ -158,10 +159,9 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
 
       <a class="tag" id="save" download="Ovi-Demetrian.vcf">
         <span class="num">(602) 433-2222</span>
-        <span class="sv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>SAVE CONTACT</span>
+        <span class="sv"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7.5" r="4.2" fill="currentColor"/><path d="M1.2 21.5c0-4.6 3.5-7.6 7.8-7.6s7.8 3 7.8 7.6z" fill="currentColor"/><circle cx="18.6" cy="8.4" r="5.1" fill="currentColor"/><path d="M18.6 5.6v5.6M15.8 8.4h5.6" stroke="#022a17" stroke-width="2.1" stroke-linecap="round"/></svg><span><b>SAVE</b><b>CONTACT</b></span></span>
       </a>
 
-      <div class="label boot" style="animation-delay:.35s">WHAT DO YOU NEED? — TAP A SCENE</div>
       <div class="scenes boot" style="animation-delay:.45s">
         <a class="scene" data-topic="a smart home project (lighting, audio, automation)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-5h4v5"/></svg>
@@ -180,7 +180,6 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
         <a class="candy c-blu" id="mail" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email</span></a>
       </div>
 
-      <p class="motto boot" style="animation-delay:.7s"><i>Lumină, nu vrăjală</i> — light, not trickery, not deception</p>
       <div class="strip boot" style="animation-delay:.75s">
         <div class="fader"><label for="lights">LIGHT · SOUND</label><input id="lights" type="range" min="0" max="100" value="40" aria-label="Light and sound"></div>
         <a class="round" id="site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Work</span></a>
