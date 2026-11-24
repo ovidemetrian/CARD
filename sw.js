@@ -1,6 +1,6 @@
 // Ovi Card — service worker. Page: network-first (updates show right away), offline fallback from cache.
-const V = 'ovi-card-v2';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
+const V = 'ovi-card-v3';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg', './ovi.vcf'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(V).then(c => Promise.all(FILES.map(f => c.add(f).catch(() => {})))));

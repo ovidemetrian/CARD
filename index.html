@@ -193,8 +193,6 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
 
       <div class="strip boot" style="animation-delay:.75s">
         <div class="fader"><label for="lights">LIGHT · SOUND</label><input id="lights" type="range" min="0" max="100" value="40" aria-label="Light and sound"></div>
-        <a class="round" id="site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Work</span></a>
-        <button class="round" id="pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>Share</span></button>
       </div>
     </section>
 
@@ -208,6 +206,7 @@ input[type=range]::-moz-range-thumb{width:4.4em;height:4.4em;border-radius:1em;b
         <p><b>Scenes</b> open a text to me, already written. Just press send.</p>
         <p><b>Call · Text · Email</b> reach me directly.</p>
         <p><b>Light · Sound</b> raises the room and the sound together, like a scene fade.</p>
+        <p>Portfolio: <a href="https://ovidemetrian.github.io/my-future-past/" target="_blank" rel="noopener">ovidemetrian.github.io/my-future-past</a></p>
       </div>
       <div class="box">
         <h3>KEEP IT</h3>
@@ -243,7 +242,6 @@ const sms = body => `sms:${C.tel}${/iphone|ipad|ipod|mac/i.test(navigator.userAg
 
 $('#call').href = 'tel:' + C.tel;
 $('#text').href = sms('Hi Ovi, I got your card. ');
-$('#site').href = C.site;
 
 // Scenes → a ready-written text, the person just presses send
 document.querySelectorAll('.scene').forEach(s => s.href = sms(`Hi Ovi, I got your card. I'd like to talk about ${s.dataset.topic}.`));
@@ -255,7 +253,9 @@ function vcard(){
     'NOTE:Smart homes · AV systems · interface design. Lumină\\, nu vrăjală.','END:VCARD'].join('\r\n');
 }
 let vcfBlob;
-const buildVcf = () => { vcfBlob = new Blob([vcard()],{type:'text/vcard;charset=utf-8'}); $('#save').href = URL.createObjectURL(vcfBlob); };
+// on the web the tag opens a real hosted contact file (phones hand it straight to Contacts); as a lone file it builds one on the spot
+const buildVcf = () => { vcfBlob = new Blob([vcard()],{type:'text/vcard;charset=utf-8'}); const s = $('#save');
+  if (location.protocol === 'https:') { s.href = 'ovi.vcf'; s.removeAttribute('download'); } else s.href = URL.createObjectURL(vcfBlob); };
 buildVcf();
 
 // Email comes from the repo's "email" issue (a GitHub form Ovi fills in himself) — never typed into this code
@@ -268,7 +268,7 @@ fetch('https://api.github.com/repos/ovidemetrian/CARD/issues?state=all&creator=o
     if (m) { C.email = m[0]; $('#mail').href = 'mailto:' + m[0]; $('#mail').hidden = false; buildVcf(); }
   })
   .catch(() => {});
-$('#save').addEventListener('click', () => toast('Saving contact…'));
+$('#save').addEventListener('click', () => toast('Opening contact…'));
 
 // LIGHT · SOUND fader — one control: room light, button colour and an original swell rise together
 const lights = $('#lights'), tag = $('#save');
@@ -356,7 +356,8 @@ function draw(){
 requestAnimationFrame(draw);
 
 // Share — the object itself → the contact → the link → copy
-$('#pass').onclick = async () => {
+const passBtn = $('#pass');
+if (passBtn) passBtn.onclick = async () => {
   const obj = new File([SEED],'ovi-card.html',{type:'text/html'});
   const vcf = new File([vcfBlob],'Ovi-Demetrian.vcf',{type:'text/vcard'});
   const text = `${C.fn} — hardware-aware UI/UX designer. Card: ${C.home}`;
