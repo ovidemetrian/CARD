@@ -1,5 +1,5 @@
-// Ovi Card — service worker: cache-first, works offline once installed.
-const V = 'ovi-card-v1';
+// Ovi Card — service worker. Page: network-first (updates show right away), offline fallback from cache.
+const V = 'ovi-card-v2';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
@@ -16,10 +16,10 @@ self.addEventListener('fetch', e => {
   const r = e.request;
   if (r.method !== 'GET' || new URL(r.url).origin !== location.origin) return;
   e.respondWith(
-    caches.match(r).then(hit => hit || fetch(r).then(res => {
+    fetch(r).then(res => {
       const copy = res.clone();
       caches.open(V).then(c => c.put(r, copy));
       return res;
-    }).catch(() => caches.match('./index.html')))
+    }).catch(() => caches.match(r).then(hit => hit || caches.match('./index.html')))
   );
 });
