@@ -133,7 +133,7 @@ h1{font-size:8.4em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
       <div class="grid">
         <a class="btn hot" id="call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span>Call</span></a>
         <a class="btn" id="text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Text</span></a>
-        <a class="btn" id="mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email</span></a>
+        <a class="btn" id="web" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg><span>Website</span></a>
         <a class="btn cool" id="save" download="Ovi-Demetrian.vcf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg><span>Save</span></a>
         <a class="btn" id="site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Portfolio</span></a>
         <button class="btn hot" id="pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>Pass it on</span></button>
@@ -177,7 +177,7 @@ const C = {
   first:'Ovi', last:'Demetrian', fn:'Ovi Demetrian',
   title:'Hardware-aware UI/UX designer', org:'Smart Homes by Ovi',
   tel:'+16024332222',
-  email:'EMAIL_HERE',          // ← put your email address here
+  web:'https://www.smarthomesbyovi.com',
   site:'https://ovidemetrian.github.io/my-future-past/',
   urls:['https://ovidemetrian.github.io/my-future-past/','https://www.smarthomesbyovi.com','https://www.mediacontentdelivery.com'],
   home:'https://ovidemetrian.github.io/CARD/'
@@ -189,7 +189,7 @@ const toast = m => { const t=$('#toast'); t.textContent=m; t.classList.add('show
 
 $('#call').href = 'tel:' + C.tel;
 $('#text').href = 'sms:' + C.tel;
-$('#mail').href = 'mailto:' + C.email;
+$('#web').href = C.web;
 $('#site').href = C.site;
 $('#homeLink').href = C.home; $('#homeLink').textContent = C.home.replace(/^https:\/\//,'').replace(/\/$/,'');
 
@@ -197,7 +197,7 @@ $('#homeLink').href = C.home; $('#homeLink').textContent = C.home.replace(/^http
 function vcard(){
   return ['BEGIN:VCARD','VERSION:3.0',
     `N:${C.last};${C.first};;;`,`FN:${C.fn}`,`ORG:${C.org}`,`TITLE:${C.title}`,
-    `TEL;TYPE=CELL:${C.tel}`,`EMAIL;TYPE=INTERNET:${C.email}`,
+    `TEL;TYPE=CELL:${C.tel}`,
     ...C.urls.map(u=>`URL:${u}`),'ADR;TYPE=WORK:;;;Phoenix;AZ;;USA',
     'NOTE:Lumină\\, nu vrăjală — light\\, not trickery\\, not deception.','END:VCARD'].join('\r\n');
 }
