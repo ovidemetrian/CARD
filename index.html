@@ -389,11 +389,25 @@ if (hosted && !standalone) {
 let deferred;
 addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred=e; });
 
-// Page to page
-let page = 0;
-function go(i){ page=Math.max(0,Math.min(1,i)); $('#track').style.transform=`translateX(${-50*page}%)`;
-  document.querySelectorAll('.dot').forEach((d,k)=>d.classList.toggle('on',k===page)); }
-document.querySelectorAll('.dot').forEach(d=>d.onclick=()=>go(+d.dataset.i));
+// Page to page — wired to the Android back button: back from About returns to the card,
+// and on the card itself back asks once ("press back again to close") instead of shutting the app
+let page = 0, guardT = 0;
+function show(i){ page=Math.max(0,Math.min(1,i)); $('#track').style.transform=`translateX(${-50*page}%)`; }
+function go(i){
+  i = Math.max(0,Math.min(1,i)); if (i === page) return;
+  if (i === 1) { history.pushState({p:1}, ''); show(1); }
+  else if (history.state && history.state.p === 1) history.back();   // popstate brings the card back
+  else show(0);
+}
+history.replaceState({p:'base'}, ''); history.pushState({p:0}, '');
+addEventListener('popstate', e => {
+  const p = e.state && e.state.p;
+  if (p === 1) { show(1); return; }
+  if (p === 0) { show(0); return; }
+  // reached the base entry: first back press only warns; a second one within 2 s closes the app
+  show(0); toast('Press back again to close'); clearTimeout(guardT);
+  guardT = setTimeout(() => history.pushState({p:0}, ''), 2000);
+});
 addEventListener('keydown', e => { if (e.key==='ArrowRight') go(page+1); if (e.key==='ArrowLeft') go(page-1); });
 let sx=null;
 $('#stage').addEventListener('pointerdown', e => { sx = e.target.closest('input') ? null : e.clientX; });
