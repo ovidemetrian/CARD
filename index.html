@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ovi Demetrian — Card</title>
+<meta name="description" content="Hardware-aware UI/UX designer: interfaces that control AV, lighting and audio.">
+<meta property="og:title" content="Ovi Demetrian">
+<meta property="og:description" content="Hardware-aware UI/UX designer: interfaces that control AV, lighting and audio.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ovidemetrian.github.io/CARD/">
+<meta property="og:image" content="https://ovidemetrian.github.io/CARD/icon.svg">
+<meta name="theme-color" content="#05081a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ovi Card">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2305081a'/%3E%3Ccircle cx='50' cy='50' r='33' fill='none' stroke='%23ffb020' stroke-width='6'/%3E%3Cpath d='M50 24L55 45L76 50L55 55L50 76L45 55L24 50L45 45Z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{--s:min(100vw,100vh);--amber:#ffb020;--orange:#ff6a00;--red:#ff3b3b;--blue:#2f6bff;--navy:#020617}
+@supports (height:100dvh){:root{--s:min(100vw,100dvh)}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--navy);color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{display:grid;place-items:center}
+
+/* background: amber / navy lava lamp, rays, sparkles */
+.bg{position:fixed;inset:0;overflow:hidden;background:linear-gradient(90deg,#4a1d00 0%,#3a1a3a 45%,#0a1440 75%,var(--navy) 100%)}
+.blob{position:absolute;border-radius:50%;filter:blur(7vmax);mix-blend-mode:screen}
+.b1{width:75vmax;height:75vmax;left:-28vmax;top:-12vmax;background:radial-gradient(circle,#ffc23a 0,#ff6a00 40%,transparent 70%);animation:l1 24s ease-in-out infinite alternate}
+.b2{width:70vmax;height:70vmax;right:-30vmax;bottom:-18vmax;background:radial-gradient(circle,#3d7dff 0,#0b2aa0 45%,transparent 70%);animation:l2 28s ease-in-out infinite alternate}
+.b3{width:40vmax;height:40vmax;left:30vw;top:40vh;background:radial-gradient(circle,#ff4d2e 0,transparent 65%);opacity:.55;animation:l3 19s ease-in-out infinite alternate}
+.edge{position:absolute;inset:0;background:linear-gradient(90deg,transparent 55%,rgba(2,6,23,.92) 100%)}
+.rays{position:absolute;left:50%;top:50%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;
+  background:repeating-conic-gradient(from 0deg,rgba(255,235,200,.07) 0 3deg,transparent 3deg 14deg);
+  -webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);
+  animation:spin 120s linear infinite}
+.spark{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,255,255,.7);opacity:0;animation:tw 4s ease-in-out infinite}
+@keyframes l1{to{transform:translate(18vmax,14vmax) scale(1.15)}}
+@keyframes l2{to{transform:translate(-20vmax,-12vmax) scale(1.1)}}
+@keyframes l3{to{transform:translate(-14vmax,-18vmax) scale(1.3)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1)}}
+
+/* fixed square stage: same picture on phone and desktop */
+.stage{position:relative;width:calc(var(--s)*.94);height:calc(var(--s)*.94);font-size:calc(var(--s)*.0094);
+  border-radius:5em;overflow:hidden;background:rgba(8,12,38,.42);border:.25em solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(1.6em) saturate(140%);backdrop-filter:blur(1.6em) saturate(140%);
+  box-shadow:0 4em 10em rgba(0,0,0,.5),inset 0 0 6em rgba(255,176,32,.06)}
+.track{display:flex;width:200%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.page{width:50%;height:100%;padding:6em 7em;display:flex;flex-direction:column;align-items:center}
+
+.top{width:100%;display:flex;justify-content:space-between;align-items:center;gap:2em}
+.chip{font-size:2.5em;padding:.45em 1em;border-radius:2em;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);letter-spacing:.02em;white-space:nowrap}
+.chip b{color:var(--amber)}
+.mini{font-size:2.5em;padding:.45em 1.1em;border-radius:2em;border:0;background:linear-gradient(90deg,var(--amber),var(--orange));color:#1a0d00;font-weight:700;cursor:pointer}
+.mini[hidden]{display:none}
+
+.logo{width:17em;height:17em;margin:4em 0 2.5em;filter:drop-shadow(0 0 2.5em rgba(255,176,32,.55))}
+h1{font-size:8.4em;margin:0;font-weight:800;letter-spacing:-.02em;line-height:1}
+.title{font-size:3.5em;margin:.55em 0 0;text-align:center;line-height:1.25;color:#ffe6b8}
+.org{font-size:2.8em;margin:.5em 0 0;color:#9fb8ff;letter-spacing:.04em}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.4em;width:100%;margin-top:5em}
+.btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1em;height:12.5em;border-radius:3em;
+  text-decoration:none;color:#fff;cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);
+  font:inherit;transition:transform .15s,background .15s}
+.btn:active{transform:scale(.95)}
+.btn svg{width:4.6em;height:4.6em}
+.btn span{font-size:2.6em;font-weight:600}
+.btn.hot{background:linear-gradient(135deg,rgba(255,176,32,.9),rgba(255,59,59,.85));color:#1a0800;border:0}
+.btn.cool{background:linear-gradient(135deg,rgba(47,107,255,.9),rgba(11,42,160,.9));border:0}
+
+.motto{margin-top:auto;font-size:2.5em;color:rgba(255,255,255,.65);text-align:center}
+.motto i{color:var(--amber);font-style:normal;font-weight:700}
+
+/* page 2: about / readme */
+.p2 h2{font-size:6em;margin:.3em 0 .2em;font-weight:800}
+.p2 .lead{font-size:3.4em;line-height:1.4;text-align:center;color:#ffe6b8;margin:.3em 0 1em}
+.box{width:100%;border-radius:3em;padding:3.2em 4em;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);margin-bottom:2.4em}
+.box h3{font-size:3em;margin:0 0 .5em;color:var(--amber)}
+.box p{font-size:2.8em;margin:.3em 0;line-height:1.4;color:rgba(255,255,255,.85)}
+.box a{color:#9fc0ff}
+.credit{margin-top:auto;font-size:2.3em;color:rgba(255,255,255,.55);text-align:center}
+.credit b{color:#fff}
+
+.dots{position:absolute;bottom:2.6em;left:50%;transform:translateX(-50%);display:flex;gap:1.4em}
+.dot{width:1.5em;height:1.5em;border-radius:50%;background:rgba(255,255,255,.3);border:0;padding:0;cursor:pointer}
+.dot.on{background:var(--amber);box-shadow:0 0 1.2em var(--amber)}
+
+/* floating MADE BY OVI badge */
+#badge{position:fixed;right:3vmin;bottom:3vmin;z-index:10;padding:.7em 1.2em;border-radius:2em;cursor:grab;touch-action:none;user-select:none;
+  font:800 clamp(10px,1.6vmin,15px)/1 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.14em;color:#1a0d00;
+  background:linear-gradient(90deg,var(--amber),var(--orange));animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 10px rgba(255,176,32,.6)}50%{box-shadow:0 0 26px rgba(255,120,0,.95),0 0 4px #fff}}
+
+#toast{position:fixed;left:50%;bottom:10vmin;transform:translateX(-50%) translateY(20px);opacity:0;z-index:11;
+  padding:12px 18px;border-radius:14px;background:rgba(0,0,0,.8);font-size:14px;transition:.3s;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%)}
+
+@media (prefers-reduced-motion:reduce){.blob,.rays,.spark,#badge{animation:none!important}.track{transition:none}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="rays"></div><div class="edge"></div>
+  <div id="sparks"></div>
+</div>
+
+<main class="stage" id="stage">
+  <div class="track" id="track">
+
+    <!-- PAGE 1: the card -->
+    <section class="page">
+      <div class="top">
+        <div class="chip" id="mode"><b>◆</b> Object mode</div>
+        <button class="mini" id="install" hidden>Install</button>
+      </div>
+
+      <svg class="logo" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="r" x1="0" x2="1"><stop offset="0" stop-color="#ffd23f"/><stop offset=".5" stop-color="#ff3b3b"/><stop offset="1" stop-color="#2f6bff"/></linearGradient>
+          <radialGradient id="gl"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#r)" stroke-width="5"/>
+        <circle cx="50" cy="50" r="24" fill="url(#gl)" opacity=".55"/>
+        <path d="M50 22L55 45L78 50L55 55L50 78L45 55L22 50L45 45Z" fill="#fff"/>
+      </svg>
+
+      <h1>Ovi Demetrian</h1>
+      <p class="title">Hardware-aware UI/UX designer<br>interfaces that control AV, lighting &amp; audio</p>
+      <p class="org">SMART HOMES BY OVI · PHOENIX, AZ</p>
+
+      <div class="grid">
+        <a class="btn hot" id="call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span>Call</span></a>
+        <a class="btn" id="text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Text</span></a>
+        <a class="btn" id="mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg><span>Email</span></a>
+        <a class="btn cool" id="save" download="Ovi-Demetrian.vcf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg><span>Save</span></a>
+        <a class="btn" id="site" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Portfolio</span></a>
+        <button class="btn hot" id="pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>Pass it on</span></button>
+      </div>
+
+      <p class="motto"><i>Lumină, nu vrăjală</i> — light, not trickery, not deception</p>
+    </section>
+
+    <!-- PAGE 2: about / readme -->
+    <section class="page p2">
+      <h2>One file, two states</h2>
+      <p class="lead">Sent in a message, this card is a self-contained object.<br>Opened from its home address, the same file becomes an app.</p>
+      <div class="box">
+        <h3>Keep it on your home screen</h3>
+        <p><b>iPhone:</b> open in Safari → Share → Add to Home Screen</p>
+        <p><b>Android:</b> Chrome → Install app (or ⋮ → Add to Home screen)</p>
+        <p>Home: <a id="homeLink"></a></p>
+      </div>
+      <div class="box">
+        <h3>What it does</h3>
+        <p><b>Save</b> puts the contact straight into your phone (.vcf).</p>
+        <p><b>Pass it on</b> sends the card itself, or its link, to the next person.</p>
+        <p>More: <a href="https://www.smarthomesbyovi.com" target="_blank" rel="noopener">smarthomesbyovi.com</a> · <a href="https://www.mediacontentdelivery.com" target="_blank" rel="noopener">mediacontentdelivery.com</a></p>
+      </div>
+      <p class="credit"><b>Concept &amp; design: Ovi Demetrian</b> · built with Claude</p>
+    </section>
+
+  </div>
+  <div class="dots"><button class="dot on" data-i="0" aria-label="Card"></button><button class="dot" data-i="1" aria-label="About"></button></div>
+</main>
+
+<div id="badge" role="button" aria-label="About this card">MADE BY OVI</div>
+<div id="toast"></div>
+
+<script>
+// The seed: a copy of this file exactly as it arrived, so it can pass itself on.
+const SEED = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+/* ═══ CARD DETAILS: edit here only ═══ */
+const C = {
+  first:'Ovi', last:'Demetrian', fn:'Ovi Demetrian',
+  title:'Hardware-aware UI/UX designer', org:'Smart Homes by Ovi',
+  tel:'+16024332222',
+  email:'EMAIL_HERE',          // ← put your email address here
+  site:'https://ovidemetrian.github.io/my-future-past/',
+  urls:['https://ovidemetrian.github.io/my-future-past/','https://www.smarthomesbyovi.com','https://www.mediacontentdelivery.com'],
+  home:'https://ovidemetrian.github.io/CARD/'
+};
+/* ═════════════════════════════════════ */
+
+const $ = s => document.querySelector(s);
+const toast = m => { const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),2200); };
+
+$('#call').href = 'tel:' + C.tel;
+$('#text').href = 'sms:' + C.tel;
+$('#mail').href = 'mailto:' + C.email;
+$('#site').href = C.site;
+$('#homeLink').href = C.home; $('#homeLink').textContent = C.home.replace(/^https:\/\//,'').replace(/\/$/,'');
+
+// vCard: the one contact object every phone understands
+function vcard(){
+  return ['BEGIN:VCARD','VERSION:3.0',
+    `N:${C.last};${C.first};;;`,`FN:${C.fn}`,`ORG:${C.org}`,`TITLE:${C.title}`,
+    `TEL;TYPE=CELL:${C.tel}`,`EMAIL;TYPE=INTERNET:${C.email}`,
+    ...C.urls.map(u=>`URL:${u}`),'ADR;TYPE=WORK:;;;Phoenix;AZ;;USA',
+    'NOTE:Lumină\\, nu vrăjală — light\\, not trickery\\, not deception.','END:VCARD'].join('\r\n');
+}
+const vcfBlob = new Blob([vcard()],{type:'text/vcard;charset=utf-8'});
+$('#save').href = URL.createObjectURL(vcfBlob);
+
+// Pass it on: the object itself → the contact → the link → copy
+$('#pass').onclick = async () => {
+  const obj = new File([SEED],'ovi-card.html',{type:'text/html'});
+  const vcf = new File([vcfBlob],'Ovi-Demetrian.vcf',{type:'text/vcard'});
+  try{
+    for (const d of [{files:[obj,vcf]},{files:[vcf]}])
+      if (navigator.canShare && navigator.canShare(d)) { await navigator.share({...d,title:C.fn,text:`${C.fn} — ${C.home}`}); return; }
+    if (navigator.share) { await navigator.share({title:C.fn,text:`${C.fn} — card`,url:C.home}); return; }
+  }catch(e){ if (e.name==='AbortError') return; }
+  try{ await navigator.clipboard.writeText(C.home); toast('Link copied'); }catch{ toast(C.home); }
+};
+
+// Two states: opened as a file = object; opened from its https home = app
+const setMode = t => $('#mode').innerHTML = `<b>◆</b> ${t}`;
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+const hosted = location.protocol==='https:' || location.hostname==='localhost';
+if (standalone) setMode('Installed');
+else if (!hosted) setMode('Object mode');
+else {
+  setMode('Web mode');
+  const add = (rel,href) => { const l=document.createElement('link'); l.rel=rel; l.href=href; document.head.appendChild(l); };
+  add('manifest','manifest.webmanifest'); add('apple-touch-icon','icon.svg');
+  if ('serviceWorker' in navigator)
+    navigator.serviceWorker.register('sw.js').then(()=>setMode('App mode')).catch(()=>{});
+  if (/iphone|ipad|ipod/i.test(navigator.userAgent)) { $('#install').hidden=false; $('#install').onclick=()=>toast('Share → Add to Home Screen'); }
+}
+let deferred;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred=e; $('#install').hidden=false; });
+$('#install').addEventListener('click', async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred=null; $('#install').hidden=true; });
+addEventListener('appinstalled', () => { setMode('Installed'); toast('Card installed'); });
+
+// Page to page
+let page = 0;
+function go(i){ page=Math.max(0,Math.min(1,i)); $('#track').style.transform=`translateX(${-50*page}%)`;
+  document.querySelectorAll('.dot').forEach((d,k)=>d.classList.toggle('on',k===page)); }
+document.querySelectorAll('.dot').forEach(d=>d.onclick=()=>go(+d.dataset.i));
+addEventListener('keydown', e => { if (e.key==='ArrowRight') go(page+1); if (e.key==='ArrowLeft') go(page-1); });
+let sx=null;
+$('#stage').addEventListener('pointerdown', e => sx=e.clientX);
+$('#stage').addEventListener('pointerup', e => { if (sx===null) return; const dx=e.clientX-sx; sx=null; if (Math.abs(dx)>50) go(page+(dx<0?1:-1)); });
+
+// Draggable badge: tap = about page, drag = move
+(() => {
+  const b=$('#badge'); let down=false, moved=false, x0, y0, bx, by;
+  b.addEventListener('pointerdown', e => { down=true; moved=false; x0=e.clientX; y0=e.clientY; const r=b.getBoundingClientRect(); bx=r.left; by=r.top; b.setPointerCapture(e.pointerId); });
+  b.addEventListener('pointermove', e => { if(!down) return; const dx=e.clientX-x0, dy=e.clientY-y0;
+    if (Math.hypot(dx,dy)>6) moved=true;
+    if (moved){ b.style.left=Math.max(0,Math.min(innerWidth-b.offsetWidth,bx+dx))+'px'; b.style.top=Math.max(0,Math.min(innerHeight-b.offsetHeight,by+dy))+'px'; b.style.right='auto'; b.style.bottom='auto'; } });
+  b.addEventListener('pointerup', () => { down=false; if(!moved) go(page===1?0:1); });
+})();
+
+// Sparkles
+(() => { const box=$('#sparks'); for (let i=0;i<38;i++){ const s=document.createElement('span'); s.className='spark';
+  s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+  s.style.animationDelay=(Math.random()*5).toFixed(2)+'s'; s.style.animationDuration=(3+Math.random()*4).toFixed(2)+'s';
+  const z=1+Math.random()*2.5; s.style.width=s.style.height=z+'px'; box.appendChild(s); } })();
+</script>
+</body>
+</html>
