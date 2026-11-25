@@ -319,9 +319,13 @@ function setLevel(v){            // v: 0..100
   }
 }
 const wake = () => { if (!ac) buildSwell(); if (ac.state !== 'running') ac.resume(); };
+// the sound only plays while the fader moves: the moment it stops (or the finger lifts) the sound dims away; the light stays
+let stillT = 0;
+const hush = () => { clearTimeout(stillT); stillT = 0; if (sw && !topTimer) sw.master.gain.setTargetAtTime(0, ac.currentTime, .25); };
 lights.addEventListener('pointerdown', wake);
 lights.addEventListener('touchstart', wake, {passive:true});
-lights.addEventListener('input', e => { wake(); setLevel(+e.target.value); });
+lights.addEventListener('input', e => { wake(); setLevel(+e.target.value); clearTimeout(stillT); stillT = setTimeout(hush, 250); });
+['pointerup','pointercancel','touchend','touchcancel','change'].forEach(ev => lights.addEventListener(ev, hush));
 document.addEventListener('visibilitychange', () => { if (ac) document.hidden ? ac.suspend() : (lights.value > 0 && ac.resume()); });
 const q = new URLSearchParams(location.search).get('light');
 if (q !== null) lights.value = Math.max(0, Math.min(100, +q));
